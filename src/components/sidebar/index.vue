@@ -1,339 +1,310 @@
 <script setup lang="ts">
-const isExpanded = ref(true)
-const activeMenu = ref('1')
-
-const handleSelect = (key: string) => {
-  // console.log(key)
+const route = useRoute()
+interface Menu {
+  id: number
+  path: string
+  title: string
+  icon: string
+  play?: string
+  isLive?: boolean
+  iconClass?: string
+  isPortal?: boolean
 }
+
+const isExpanded = ref<boolean>(true)
+const viewport = useViewport()
+const activeMenu = ref(route.fullPath)
+
+const mainMenus: Menu[] = [
+  {
+    id: 1,
+    path: '/',
+    title: 'Khám Phá',
+    icon: 'material-symbols:explore-outline',
+  },
+  {
+    id: 2,
+    path: '/zing-chart',
+    title: '#zingchart',
+    icon: 'ic:baseline-auto-graph',
+    play: '?q=',
+  },
+  {
+    id: 3,
+    path: '/radio',
+    title: 'Radio',
+    icon: 'mdi:music-circle-outline',
+    play: '?q=',
+    isLive: true,
+  },
+  {
+    id: 4,
+    path: '/library',
+    title: 'Thư viện',
+    icon: 'bx:library',
+    play: '?q=',
+  },
+]
+
+const rankingMenus: Menu[] = [
+  {
+    id: 1,
+    path: '/moi-phat-hanh',
+    title: 'BXH nhạc mới',
+    icon: 'solar:music-notes-linear',
+    play: '?q=',
+  },
+  {
+    id: 2,
+    path: '/hub',
+    title: 'Chủ Đề & Thể Loại',
+    icon: 'iconoir:grid-add',
+  },
+  {
+    id: 3,
+    path: '/top100',
+    title: 'Top 100',
+    icon: 'iconoir:star',
+  },
+]
+
+const userMenus: Menu[] = [
+  {
+    id: 1,
+    path: '/library/history',
+    title: 'Nghe gần đây',
+    icon: 'bx:history',
+    iconClass: 'bg-[#8843ff] rounded-full p-0.5',
+  },
+  {
+    id: 2,
+    path: '/library/favorite',
+    title: 'Bài hát yêu thích',
+    icon: 'humbleicons:heart',
+    iconClass: 'bg-[#14c7ff] rounded-full p-0.5',
+  },
+  {
+    id: 3,
+    path: '/library/playlist',
+    title: 'Playlist',
+    icon: 'solar:playlist-minimalistic-2-outline',
+    iconClass: 'bg-[#fa7130] rounded-full p-0.5',
+  },
+  {
+    id: 4,
+    path: '/library/album',
+    title: 'Album',
+    icon: 'iconamoon:music-album-light',
+    iconClass: 'bg-[#ff4daf] rounded-full p-0.5',
+  },
+  {
+    id: 5,
+    path: '/library/uploaded',
+    title: 'Đã tải lên',
+    icon: 'bx:cloud-upload',
+    iconClass: 'bg-[#ff4e4e] rounded-full p-0.5',
+  },
+]
+
+const playlist: Menu[] = [
+  {
+    id: 1,
+    path: '/library/playlist-1',
+    title: 'Playlist 1',
+    isPortal: true,
+  },
+  {
+    id: 2,
+    path: '/library/playlist-2',
+    title: 'Playlist 2',
+    isPortal: true,
+  },
+  {
+    id: 3,
+    path: '/library/playlist-3',
+    title: 'Playlist 3',
+    isPortal: true,
+  },
+  {
+    id: 4,
+    path: '/library/playlist-4',
+    title: 'Playlist 4',
+    isPortal: true,
+  },
+  {
+    id: 5,
+    path: '/library/playlist-5',
+    title: 'Playlist 5',
+    isPortal: true,
+  },
+]
+
+const handleSelect = (key: string, keyPath: string[]) => {
+  activeMenu.value = key
+  // navigateTo(key)
+}
+
+const handleOpen = () => {
+  console.log('open')
+}
+
+onBeforeMount(() => {
+  isExpanded.value = viewport.isGreaterOrEquals('md')
+})
+
+watch(viewport.breakpoint, (newBreakpoint) => {
+  isExpanded.value = viewport.isGreaterOrEquals('md')
+})
 </script>
 
 <template>
-  <div class="fixed h-screen">
-    <div
-      class="sidebar-wrap flex flex-col flex-start"
-      :class="{ 'is-expanded': isExpanded }"
-    >
+  <div class="sidebar" :class="{ 'is-expanded': isExpanded }">
+    <div class="sidebar-wrapper">
       <!-- logo -->
-      <div class="sidebar-logo h-[70px]">
-        <span class="logo"></span>
-      </div>
+      <div class="logo-box"><Logo class="logo" /></div>
 
       <!-- menu -->
       <el-menu
-        class="sidebar-menu flex flex-col flex-1 overflow-hidden"
+        class="menu flex flex-col flex-1 overflow-hidden"
         :default-active="activeMenu"
         @select="handleSelect"
       >
-        <!-- menu top -->
-        <div class="menu-main">
-          <el-menu-item index="1" class="menu-item">
-            <el-icon :size="24" class="menu-icon">
-              <Icon name="material-symbols:explore-outline" opacity="0.8" />
-            </el-icon>
-
-            <span class="menu-title">Khám Phá</span>
-          </el-menu-item>
-
-          <el-menu-item index="2" class="menu-item">
-            <el-icon :size="24" class="menu-icon">
-              <Icon name="ic:baseline-auto-graph" opacity="0.8" />
-            </el-icon>
-
-            <span class="menu-title">#zingchart</span>
-
-            <el-icon :size="20" class="play-button">
-              <Icon name="bx:play-circle" />
-            </el-icon>
-          </el-menu-item>
-
-          <el-menu-item index="3" class="menu-item">
-            <el-icon :size="24" class="menu-icon">
-              <Icon name="mdi:music-circle-outline" opacity="0.8" />
-            </el-icon>
-
-            <span class="menu-title flex"
-              >Radio
-
-              <img
-                class="ml-1 md:inline hidden pb-0.5"
-                src="https://zjs.zmdcdn.me/zmp3-desktop/dev/147506/static/media/live-tag.e25dd240.svg"
-                alt=""
-              />
-            </span>
-
-            <el-icon :size="20" class="play-button">
-              <Icon name="bx:play-circle" />
-            </el-icon>
-          </el-menu-item>
-
-          <el-menu-item index="4" class="menu-item">
-            <el-icon :size="24" class="menu-icon">
-              <Icon name="bx:library" opacity="0.8" />
-            </el-icon>
-
-            <span class="menu-title">Thư Viện</span>
-
-            <el-icon :size="20" class="play-button">
-              <Icon name="bx:play-circle" />
-            </el-icon>
-          </el-menu-item>
-        </div>
+        <!-- main menus -->
+        <SidebarMenuItem
+          v-for="menu in mainMenus"
+          :key="menu.id"
+          :menu="menu"
+          :is-expanded="isExpanded"
+        />
 
         <!-- divider -->
-        <el-divider class="sidebar-divider" />
+        <el-divider class="divider" />
 
-        <!-- menu center -->
-        <div class="scroll-box flex-1 overflow-y-auto">
-          <el-menu-item index="5" class="menu-item">
-            <el-icon :size="22" class="menu-icon">
-              <Icon name="solar:music-notes-linear" opacity="0.8" />
-            </el-icon>
+        <el-scrollbar class="flex-1">
+          <!-- ranking menus -->
+          <SidebarMenuItem
+            v-for="menu in rankingMenus"
+            :key="menu.id"
+            :menu="menu"
+            :is-expanded="isExpanded"
+          />
 
-            <span class="menu-title">BXH nhạc mới</span>
+          <SidebarVipBanner v-if="isExpanded" />
 
-            <el-icon :size="20" class="play-button">
-              <Icon name="bx:play-circle" />
-            </el-icon>
-          </el-menu-item>
+          <div mt-5></div>
 
-          <el-menu-item index="6" class="menu-item">
-            <el-icon :size="22" class="menu-icon">
-              <Icon name="iconoir:grid-add" opacity="0.8" />
-            </el-icon>
-
-            <span class="menu-title">Chủ Đề & Thể Loại</span>
-          </el-menu-item>
-
-          <el-menu-item index="7" class="menu-item">
-            <el-icon :size="22" class="menu-icon">
-              <Icon name="iconoir:star" opacity="0.8" />
-            </el-icon>
-
-            <span class="menu-title">Top 100</span>
-          </el-menu-item>
-
-          <div class="vip-banner-sidebar hidden md:block">
-            <div class="text">
-              Nghe nhạc không quảng cáo cùng kho nhạc PREMIUM
-            </div>
-            <a
-              class="zm-btn is-medium is-outlined is-upper button"
-              tabindex="0"
-              href="https://zingmp3.vn/vip?utm_source=desktop&amp;utm_campaign=VIP&amp;utm_medium=sidebar"
-              target="_blank"
-              >Nâng cấp tài khoản</a
-            >
-          </div>
-
-          <div class="mt-6">
-            <el-menu-item
-              index="4"
-              class="menu-item bg-transparent! border-transparent!"
-            >
-              <el-icon
-                :size="24"
-                class="menu-icon bg-[#8843ff] rounded-full p-0.5"
-              >
-                <Icon name="bx:history" />
-              </el-icon>
-
-              <span class="menu-title">Nghe gần đây</span>
-
-              <el-icon :size="20" class="play-button">
-                <Icon name="bx:play-circle" />
-              </el-icon>
-            </el-menu-item>
-
-            <el-menu-item
-              index="4"
-              class="menu-item bg-transparent! border-transparent!"
-            >
-              <el-icon
-                :size="24"
-                class="menu-icon bg-[#14c7ff] rounded-full p-0.5"
-              >
-                <Icon name="humbleicons:heart" />
-              </el-icon>
-
-              <span class="menu-title">Bài hát yêu thích</span>
-            </el-menu-item>
-
-            <el-menu-item
-              index="4"
-              class="menu-item bg-transparent! border-transparent!"
-            >
-              <el-icon
-                :size="24"
-                class="menu-icon bg-[#fa7130] rounded-full p-0.5"
-              >
-                <Icon name="solar:playlist-minimalistic-2-outline" />
-              </el-icon>
-
-              <span class="menu-title">Playlist</span>
-            </el-menu-item>
-
-            <el-menu-item
-              index="4"
-              class="menu-item bg-transparent! border-transparent!"
-            >
-              <el-icon
-                :size="24"
-                class="menu-icon bg-[#ff4daf] rounded-full p-0.5"
-              >
-                <Icon name="iconamoon:music-album-light" />
-              </el-icon>
-
-              <span class="menu-title">Album</span>
-            </el-menu-item>
-
-            <el-menu-item
-              index="4"
-              class="menu-item bg-transparent! border-transparent!"
-            >
-              <el-icon
-                :size="24"
-                class="menu-icon bg-[#ff4e4e] rounded-full p-0.5"
-              >
-                <Icon name="bx:cloud-upload" />
-              </el-icon>
-
-              <span class="menu-title">Đã tải lên</span>
-            </el-menu-item>
-          </div>
+          <!-- user menus -->
+          <SidebarMenuItem
+            v-for="menu in userMenus"
+            :key="menu.id"
+            :menu="menu"
+            :is-expanded="isExpanded"
+            :only-active-text="true"
+          />
 
           <!-- divider -->
-          <el-divider class="sidebar-divider" />
-        </div>
+          <el-divider class="divider" />
+
+          <!-- Playlist menu -->
+          <template v-if="isExpanded">
+            <SidebarMenuItem
+              v-for="menu in playlist"
+              :key="menu.id"
+              :menu="menu"
+              :is-expanded="true"
+              :only-active-text="true"
+              :wrapper-class="['h-inherit! py-1.5! px-5!']"
+            />
+          </template>
+        </el-scrollbar>
       </el-menu>
 
+      <!-- footer -->
       <div class="footer">
-        <el-radio-group v-model="isExpanded" style="margin-bottom: 20px">
-          <el-radio-button :label="true">expand</el-radio-button>
-          <el-radio-button :label="false">collapse</el-radio-button>
-        </el-radio-group>
+        <div v-if="isExpanded" class="add-playlist-button">
+          <el-icon :size="18">
+            <Icon name="bx:plus" />
+          </el-icon>
+          <span class="ml-2 text-sm">Tạo playlist mới</span>
+        </div>
+
+        <div class="md:hidden text-center">
+          <el-icon
+            :size="38"
+            class="expanded-button"
+            @click="isExpanded = !isExpanded"
+          >
+            <Icon v-if="isExpanded" name="ic:baseline-keyboard-arrow-left" />
+            <Icon v-else name="ic:baseline-keyboard-arrow-right" />
+          </el-icon>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.sidebar-wrap {
-  @apply w-[70px] h-full bg-[var(--sidebar-popup-bg)] md:w-[240px] md:bg-[var(--sidebar-bg)];
-}
+@import '~/assets/scss/mixin.scss';
 
-.sidebar-logo {
-  @apply w-full flex justify-center items-center pb-[6px] md:pb-0 md:pl-7 md:justify-start;
-}
+$sidebar-width-sm: 70px;
+$sidebar-width-md: 240px;
+$logo-height: 70px;
+$footer-height: 52px;
 
-.logo {
-  @apply w-[45px] h-[45px] bg-contain bg-no-repeat md:w-[120px] md:h-[40px];
+.sidebar {
+  @apply h-screen bg-[var(--sidebar-popup-bg)];
+  width: $sidebar-width-sm;
 
-  background-image: var(--logo-icon-url);
+  > .sidebar-wrapper {
+    @apply w-full h-full flex flex-col flex-start;
+  }
 
-  @screen md {
-    background-image: var(--logo-url);
+  .logo-box {
+    @include flex-center;
+    @apply w-full pb-[6px];
+
+    height: $logo-height;
+  }
+
+  .menu {
+    @apply border-r-0 bg-transparent;
+  }
+
+  .divider {
+    @apply my-4 w-[24px] mx-auto border-[var(--border-primary)];
+  }
+
+  .footer {
+    height: $footer-height;
+    @apply flex items-center py-2 px-5;
   }
 }
 
-.sidebar-menu {
-  @apply border-r-0 bg-transparent;
-}
+.sidebar.is-expanded {
+  width: $sidebar-width-md;
 
-.menu-item {
-  @apply flex items-center leading-5 font-medium px-3 py-5 h-[48px];
-  color: var(--navigation-text);
-  border-left: 3px solid transparent;
+  .logo-box {
+    @apply w-full pb-0 pl-7 justify-start;
 
-  &:hover {
-    @apply bg-transparent;
-    color: var(--text-item-hover);
-  }
-
-  &.is-active {
-    @apply bg-[var(--alpha-bg)] md:border-l-[var(--purple-primary)];
-    color: var(--text-item-hover);
-  }
-
-  .menu-icon {
-    @apply mr-3;
-  }
-
-  .menu-title {
-    @apply hidden md:inline md:flex-1;
-  }
-
-  .play-button {
-    @apply hidden md:display-inherit md:invisible md:opacity-0 md:transition-all;
-  }
-
-  &:hover .play-button {
-    @apply md:visible md:opacity-100;
-  }
-}
-
-.el-divider {
-  @apply my-4 w-[24px] md:w-[80%] mx-auto border-[var(--border-primary)];
-}
-
-.is-expanded {
-  @apply w-[240px];
-
-  .sidebar-logo {
-    @apply pb-0 pl-7 justify-start;
-  }
-
-  .logo {
-    @apply w-[120px] h-[40px];
-    background-image: var(--logo-url);
-  }
-
-  .el-menu .el-menu-item {
-    &.is-active {
-      @apply border-[var(--purple-primary)];
-    }
-
-    .menu-title {
-      @apply inline;
+    .logo {
+      @include logo-medium;
     }
   }
 
-  .el-divider {
+  .divider {
     @apply w-[80%];
   }
+
+  .footer {
+    @apply border-t-1 border-t-solid border-t-[var(--border-primary)];
+  }
 }
 
-.vip-banner-sidebar {
-  padding: 15px 8px;
-  border-radius: 8px;
-  margin: 20px 20px;
-  text-align: center;
-  background-image: linear-gradient(117deg, #5a4be7, #c86dd7 102%);
+.add-playlist-button {
+  @apply flex h-full items-center text-[var(--navigation-text)] flex-1 cursor-pointer;
 }
 
-.vip-banner-sidebar .text {
-  font-size: 12px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  border-color: #ffdb00;
-  line-height: 1.67;
-  color: var(--white);
-}
-
-.vip-banner-sidebar .zm-btn {
-  background-color: #ffdb00;
-  border-color: #ffdb00;
-  color: #32323d;
-  text-decoration: none;
-  display: inline-block;
-  padding: 6px 16px;
-  font-size: 12px;
-  font-weight: 600;
-  border: 0;
-  border-radius: 999px;
-  line-height: normal;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  text-transform: uppercase;
+.expanded-button {
+  @apply rounded-full bg-[var(--alpha-bg)] p-2 cursor-pointer;
 }
 </style>

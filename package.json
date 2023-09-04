@@ -28,6 +28,7 @@
     "lint-staged": "^13.2.0",
     "nuxt": "^3.3.2",
     "nuxt-icon": "^0.5.0",
+    "nuxt-viewport": "^2.0.6",
     "prettier": "^2.8.7",
     "sass": "^1.60.0",
     "typescript": "^5.0.2"

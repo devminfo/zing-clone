@@ -14,4 +14,6 @@ definePageMeta({
       <option value="purple">Purple</option>
     </select>
   </div>
+
+  <DialogAddPlaylist />
 </template>

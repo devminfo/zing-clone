@@ -29,6 +29,11 @@
   --purple-border-player: hsla(0, 0%, 100%, 0.1);
   --purple-main-box-shadow: rgba(66, 66, 66, 0.4);
   --purple-new-release-box-shadow: none;
+  --purple-text-placeholder: #dadada;
+  --purple-sticky-header-box-shadow: rgba(0,0,0,0.1);
+  --purple-portal-menu-box-shadow: rgba(0,0,0,0.2);
+  --purple-text-primary: #fff;
+
 }
 
 .purple-mode {
@@ -46,7 +51,6 @@
   --sidebar-popup-bg: var(--purple-sidebar-popup-bg);
   --primary-bg: var(--purple-primary-bg);
   --gradient-latest-section-artist: var(--purple-gradient-latest-section-artist)
-    (286.07deg, rgba(23, 15, 35, 0.95) 55.21%, rgba(23, 15, 35, 0.6));
   --alpha-layout-bg: var(--purple-alpha-layout-bg);
   --queue-player-popup-bg: var(--purple-queue-player-popup-bg);
   --blur-queue-bg: var(--purple-blur-queue-bg);
@@ -61,4 +65,8 @@
   --border-player: var(--purple-border-player);
   --main-box-shadow: var(--purple-main-box-shadow);
   --new-release-box-shadow: var(--purple-new-release-box-shadow);
+  --text-placeholder: var(--purple-text-placeholder);
+  --sticky-header-box-shadow: var(--purple-sticky-header-box-shadow);
+  --portal-menu-box-shadow: var(--purple-portal-menu-box-shadow);
+  --text-primary: var(--purple-text-primary);
 }
