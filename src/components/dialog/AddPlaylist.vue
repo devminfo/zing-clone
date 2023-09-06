@@ -1,64 +1,97 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-
-const dialogVisible = ref(true)
+const { isShow, close } = useDialogAddPlaylist()
 
 const form = reactive({
   name: '',
+  isPublic: true,
+  isRandomPlaylist: true,
 })
+
+const onSubmit = () => {
+  console.log(form)
+
+  form.name = ''
+  close()
+}
 </script>
 
 <template>
-  <el-dialog
-    v-model="dialogVisible"
-    width="330px"
-    align-center
-    class="dialog-wrapper"
-  >
+  <el-dialog v-model="isShow" width="330px" align-center class="dialog-wrapper">
     <template #header>
       <h3 class="text-center text-lg font-bold pl-[14px]!">Tạo playlist mới</h3>
     </template>
 
     <div class="form-playlist-content">
-      <el-form :model="form">
-        <el-input v-model="form.name" placeholder="Nhập tên playlist" />
-      </el-form>
-    </div>
+      <form @submit.prevent="onSubmit">
+        <input
+          v-model="form.name"
+          type="text"
+          placeholder="Nhập tên playlist"
+          autofocus
+        />
 
-    <template #footer>
-      <div class="text-center">
-        <el-button round class="w-full" type="primary">Tạo mới</el-button>
-      </div>
-    </template>
+        <div class="option">
+          <div>
+            <span class="title">Công khai</span>
+            <p class="subtitle">Mọi người có thể nhìn thấy playlist này</p>
+          </div>
+
+          <el-switch
+            v-model="form.isPublic"
+            size="small"
+            style="--el-switch-on-color: var(--primary)"
+          />
+        </div>
+
+        <div class="option">
+          <div>
+            <span class="title">Phát ngẫu nhiên</span>
+            <p class="subtitle">Luôn phát ngẫu nhiên tất cả bài hát</p>
+          </div>
+
+          <el-switch
+            v-model="form.isRandomPlaylist"
+            size="small"
+            style="--el-switch-on-color: var(--primary)"
+          />
+        </div>
+
+        <div class="mt-8 mb-6">
+          <el-button native-type="submit" :disabled="!form.name" w-full round
+            >Tạo mới</el-button
+          >
+        </div>
+      </form>
+    </div>
   </el-dialog>
 </template>
 
-<style lang="scss">
-.dialog-wrapper {
-  background-color: var(--primary-bg) !important;
+<style lang="scss" scoped>
+@import '~/assets/scss/mixin.scss';
 
-  .el-input__wrapper {
-    @apply bg-[var(--alpha-bg)] rounded-full;
+.el-button {
+  @include button-styles(var(--primary), var(--white));
+}
 
-    border: 1px solid var(--border-primary);
-    outline: none;
-    box-shadow: none !important;
-    color: var(--text-primary) !important;
+.form {
+  width: 100%;
+}
+
+input {
+  @apply w-full h-[40px] bg-[var(--alpha-bg)] text-sm text-[var(--text-primary)]  placeholder:text-[var(--text-placeholder)] px-3 rounded-full outline-0;
+
+  border: 1px solid var(--border-primary);
+}
+
+.option {
+  @apply w-full flex justify-between items-center px-3 pt-5;
+
+  .title {
+    @apply text-sm text-[var(--text-primary)];
   }
-}
 
-.form-playlist-content {
-  max-width: 290px;
-  text-align: center;
-}
-
-.el-dialog__headerbtn {
-  width: 48px;
-  height: 34px;
-}
-
-.el-icon.el-dialog__close {
-  font-size: 20px;
-  color: white !important;
+  .subtitle {
+    @apply text-xs text-[var(--text-secondary)];
+  }
 }
 </style>

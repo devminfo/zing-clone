@@ -3,7 +3,7 @@ interface Menu {
   id: number
   path: string
   title: string
-  icon: string
+  icon?: string
   play?: string
   isLive?: boolean
   iconClass?: string
@@ -19,7 +19,7 @@ interface IProp {
 
 defineProps<IProp>()
 
-const showPortal = ref(-1)
+const showPortal = ref('-1')
 </script>
 
 <template>
@@ -54,7 +54,7 @@ const showPortal = ref(-1)
       <Icon name="bx:play-circle" />
     </el-icon>
 
-    <SidebarPortal v-if="menu.isPortal" @hide="showPortal = -1">
+    <SidebarPortal v-if="menu.isPortal" @hide="showPortal = '-1'">
       <span
         class="portal-icon -hidden"
         :class="{ '-show': showPortal === menu.path }"

@@ -4,12 +4,14 @@ interface Menu {
   id: number
   path: string
   title: string
-  icon: string
+  icon?: string
   play?: string
   isLive?: boolean
   iconClass?: string
   isPortal?: boolean
 }
+
+const { open } = useDialogAddPlaylist()
 
 const isExpanded = ref<boolean>(true)
 const viewport = useViewport()
@@ -144,10 +146,6 @@ const handleSelect = (key: string, keyPath: string[]) => {
   // navigateTo(key)
 }
 
-const handleOpen = () => {
-  console.log('open')
-}
-
 onBeforeMount(() => {
   isExpanded.value = viewport.isGreaterOrEquals('md')
 })
@@ -221,7 +219,7 @@ watch(viewport.breakpoint, (newBreakpoint) => {
 
       <!-- footer -->
       <div class="footer">
-        <div v-if="isExpanded" class="add-playlist-button">
+        <div v-if="isExpanded" class="add-playlist-button" @click="open">
           <el-icon :size="18">
             <Icon name="bx:plus" />
           </el-icon>
@@ -240,6 +238,8 @@ watch(viewport.breakpoint, (newBreakpoint) => {
         </div>
       </div>
     </div>
+
+    <DialogAddPlaylist />
   </div>
 </template>
 

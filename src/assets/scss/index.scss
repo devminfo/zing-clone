@@ -48,3 +48,11 @@ html {
 .scroll-box::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
+
+.dialog-wrapper {
+  background-color: var(--primary-bg) !important;
+}
+
+.el-dialog__body {
+  padding-block: 0 !important;
+}
