@@ -33,6 +33,7 @@
   --purple-sticky-header-box-shadow: rgba(0,0,0,0.1);
   --purple-portal-menu-box-shadow: rgba(0,0,0,0.2);
   --purple-text-primary: #fff;
+  --purple-text-secondary: hsla(0,0%,100%,0.5);
 
 }
 
@@ -69,4 +70,5 @@
   --sticky-header-box-shadow: var(--purple-sticky-header-box-shadow);
   --portal-menu-box-shadow: var(--purple-portal-menu-box-shadow);
   --text-primary: var(--purple-text-primary);
+  --text-secondary: var(--purple-text-secondary);
 }
